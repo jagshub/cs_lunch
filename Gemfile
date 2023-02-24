@@ -54,6 +54,7 @@ group :test do
 end
 
 group :development, :test do
+  gem 'faker'                                                                   # It's a library for generating fake data such as names, addresses, and phone numbers.
   gem 'brakeman'                                                                # Security vulnerability scanner
   gem 'factory_bot_rails'                                                       # Fixtures in Rails
   gem 'listen'                                                                  # Run code on file changes

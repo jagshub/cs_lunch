@@ -9,13 +9,13 @@ bundle install
 
 **Setup db**
 
-rake db:create
+rails db:setup
 
-rake db:migrate
+rails  db:migrate
 
 **Setup employees and departments**
 
-rake db:seed:create_employees_departments
+rake db:seed
 
 **Run app**
 
