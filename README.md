@@ -17,6 +17,14 @@ rails  db:migrate
 
 rake db:seed
 
+**Setup automated job using whenever**
+
+Development
+whenever --update-crontab --set environment=development
+
+Production
+whenever --update-crontab
+
 **Run app**
 
 rails s
