@@ -33,18 +33,19 @@ class Employee < ApplicationRecord
       end
     end
 
-    def fetch_previous_partners(emp_id)
-      last_3_months_lunch_groups = LunchPartner.created_in_last_3_months.where(employee_id: emp_id).pluck(:lunch_group_id)
-      last_3_months_partners = []
-      last_3_months_partners << LunchPartner.where(lunch_group_id: last_3_months_lunch_groups).where.not(employee_id: emp_id).pluck(:employee_id)
-      last_3_months_partners.flatten
+    def fetch_previous_partners(emp_id, all = false)
+      groups =  all ? LunchPartner.where(employee_id: emp_id).pluck(:lunch_group_id) :
+                  LunchPartner.created_in_last_3_months.where(employee_id: emp_id).pluck(:lunch_group_id)
+      partners = []
+      partners << LunchPartner.where(lunch_group_id: groups).where.not(employee_id: emp_id).pluck(:employee_id)
+      partners.flatten.uniq
     end
 
     def fetch_partners(emp_id)
       lunch_groups = LunchPartner.created_this_month.where(employee_id: emp_id).pluck(:lunch_group_id)
       partners = []
       partners << LunchPartner.where(lunch_group_id: lunch_groups).where.not(employee_id: emp_id).pluck(:employee_id)
-      partners.flatten
+      partners.flatten.uniq
     end
   end
 end
