@@ -28,7 +28,7 @@ class LunchPartner < ApplicationRecord
   belongs_to :employee
   belongs_to :lunch_group
 
-  scope :created_in_last_3_months, lambda {where("created_at > ? AND created_at < ?", (Time.now - 3.month).beginning_of_month, Time.now.end_of_month)}
+  scope :created_in_last_3_months, lambda {where("created_at > ? AND created_at < ?", (Time.now - 3.month).beginning_of_month, (Time.now - 3.month).end_of_month)}
   scope :created_this_month, lambda {where("created_at > ? AND created_at < ?", Time.now.beginning_of_month, Time.now.end_of_month)}
 
   class << self
