@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_24_112715) do
+ActiveRecord::Schema.define(version: 2023_02_25_062211) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2023_02_24_112715) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_departments_on_name", unique: true
   end
 
   create_table "employees", force: :cascade do |t|
@@ -61,6 +62,29 @@ ActiveRecord::Schema.define(version: 2023_02_24_112715) do
     t.index ["department_id"], name: "index_employees_on_department_id"
   end
 
+  create_table "lunch_groups", force: :cascade do |t|
+    t.string "name"
+    t.datetime "lunch_date"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "lunch_partners", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "month"
+    t.bigint "employee_id", null: false
+    t.bigint "lunch_group_id", null: false
+    t.bigint "department_id"
+    t.index ["department_id"], name: "index_lunch_partners_on_department_id"
+    t.index ["employee_id", "lunch_group_id"], name: "idx_emp_group", unique: true
+    t.index ["employee_id", "month"], name: "idx_emp_month", unique: true
+    t.index ["employee_id"], name: "index_lunch_partners_on_employee_id"
+    t.index ["lunch_group_id"], name: "index_lunch_partners_on_lunch_group_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "lunch_partners", "employees"
+  add_foreign_key "lunch_partners", "lunch_groups"
 end
