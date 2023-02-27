@@ -72,7 +72,7 @@ class EmployeesController < ApplicationController
   private
 
   def set_employee
-    @employee = Employee.find(params[:id])
+    @employee = Employee.unscoped.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
