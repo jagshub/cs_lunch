@@ -11,6 +11,32 @@
   </head>
 
   <body>
+
+  <div class="collapse" id="navbarToggleExternalContent">
+    <div class="bg-dark p-4">
+      <h5 class="text-white h4">CreditShelf</h5>
+      <span class="text-muted">Mystery lunch</span>
+      <div>
+        <a class="link link-primary" href="/login">Manage</a>
+      </div>
+    </div>
+  </div>
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </nav>
+
+  <div align="center"><a class="link link-primary" href="/">Home</a></div>
+  <div align="center"><a class="link link-primary" href="/login">Manage</a></div>
+  <% if session[:valid] %>
+    <div align="center"> <a class="link link-primary" href="<%= new_employee_path%>">Create</a> </div>
+    <div align="center">
+      <%= link_to('Signout', '/home/signout') %>
+    </div>
+  <%end %>
     <%= yield %>
   </body>
 </html>
