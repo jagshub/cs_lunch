@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_02_25_062211) do
+ActiveRecord::Schema.define(version: 2023_02_27_070308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(version: 2023_02_25_062211) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "image_url"
     t.bigint "department_id"
+    t.boolean "to_delete", default: false
     t.index ["department_id"], name: "index_employees_on_department_id"
   end
 
