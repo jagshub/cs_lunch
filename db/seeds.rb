@@ -66,7 +66,7 @@
 # Generate some initial data like employees, mystery lunches with partners
 LunchPartner.destroy_all
 LunchGroup.destroy_all
-Employee.destroy_all
+Employee.unscoped.destroy_all
 
 # Jag: Create employees
 31.times do |n|
