@@ -8,6 +8,7 @@
 #  image_url     :string
 #  name          :string
 #  sex           :string
+#  to_delete     :boolean          default(FALSE)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  department_id :bigint
@@ -17,6 +18,7 @@
 #  index_employees_on_department_id  (department_id)
 #
 class Employee < ApplicationRecord
+  include Rails.application.routes.url_helpers
 
   belongs_to :department
   has_many :lunch_groups
@@ -24,11 +26,18 @@ class Employee < ApplicationRecord
 
   has_one_attached :image
 
+  default_scope { where(to_delete: false).order(updated_at: :desc)}
+
+
+  def get_image_url
+    url_for(self.image)
+  end
 
   class << self
     # Jag: Find a group, so that depts of every employee is different
     def find_lunch_group(emp_departments_in_groups, dept_of_emp_to_pair)
       emp_departments_in_groups.each do |k,v|
+        next if LunchPartner.created_this_month.where(lunch_group_id: k).count > 2
         return k unless v.include? dept_of_emp_to_pair
       end
     end
