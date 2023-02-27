@@ -16,8 +16,9 @@ set :output, "log/cron_log.log"
 # 2. update crontab
 #    whenever --update-crontab --set environment=development
 
-  every 1.minutes do
+ENV.each { |k, v| env(k, v) }
 #Create mystery lunches every 1 of month.
 # every 1.month, :at => "1 AM" do
+every 1.minutes do
   runner "LunchPartner.create_mystery_lunch_for_current_month"
 end
