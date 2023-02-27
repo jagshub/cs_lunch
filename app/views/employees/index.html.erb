@@ -1,0 +1,37 @@
+<% if session[:valid] %>
+  <table class="table">
+    <thead>
+    <tr>
+      <th scope="col"></th>
+      <th>Employee </th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @employees.each do |emp| %>
+      <tr>
+        <td>
+          <%= @employees.find_index(emp) + 1 %>
+        </td>
+        <td>
+          <div class="card" style="width:250px">
+            <% if emp.image.attached? %>
+              <%= image_tag emp.image, size: "200x200" , class:"card-img-top"%>
+            <% else %>
+              <img class="card-img-top" src="<%= emp.image_url.gsub('300','100') %>" alt="Card image" height="100", width="100" >
+            <% end %>
+            <div class="card-body">
+              <h4 class="card-title"><% if emp.to_delete? %> <del style='color:red'><%end %> <%=emp.name %></h4>
+              <p class="card-text"><%= emp.department.name %></p>
+            </div>
+          </div>
+        </td>
+        <td><a href="<%= edit_employee_path(emp.id)%>" class="btn btn-primary">Edit</a> </td>
+        <td> <%= button_to 'Delete', employee_path(emp.id), method: :delete %> </td>
+        <td> <%= button_to 'Restore',  employee_path(emp.id), params: {restore: true}, method: :delete %> </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<%end %>

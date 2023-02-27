@@ -1,0 +1,26 @@
+<%if session[:login_error].present?  %>
+  <div class=container>
+    <div class="alert alert-warning alert-dismissable">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+      <strong>  <%= session[:login_error] %> </strong>
+    </div>
+  </div>
+  <% session[:login_error] = nil %>
+<%end %>
+<div class="container">
+  <center><h2>Manage Employees</h2></center>
+  <br><br>
+  <%= form_tag("/login/index", method: "post") do %>
+
+    <div class="field">
+      <div class="row">
+        <div class="col-md-4 offset-4">
+          <%= label_tag(:password, "Password :") %>
+          <%= text_field_tag(:password) %>
+          <%= submit_tag("Go") %>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+</div>

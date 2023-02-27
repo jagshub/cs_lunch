@@ -1,0 +1,29 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th colspan="5"> Previous Lunch partners </th>
+    <a href="/" class="btn btn-primary"> Home </a>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+<% Employee.fetch_previous_partners(@employee).each do |id| %>
+  <% emp = Employee.find(id) %>
+  <td>
+
+    <div class="card" style="width:250px">
+      <% if emp.image.attached? %>
+        <%= image_tag emp.image, size: "200x200" , class:"card-img-top"%>
+      <% else %>
+        <img class="card-img-top" src="<%= emp.image_url.gsub('300','100') %>" alt="Card image" height="100", width="100" >
+      <% end %>
+      <div class="card-body">
+        <h4 class="card-title"><%= emp.name %></h4>
+        <p class="card-text"><%= emp.department.name %></p>
+      </div>
+    </div>
+  </td>
+<% end %>
+  </tr>
+  </tbody>
+</table>
