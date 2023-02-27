@@ -64,6 +64,7 @@ group :development, :test do
   gem 'pry'                                                                     # Interactive console
   gem 'rspec'                                                                   # Testing
   gem 'rspec-rails'                                                             # Rspec for Rails
+  gem 'rails-controller-testing'
   gem 'rubocop', require: false                                                 # Ruby linter
 end
 

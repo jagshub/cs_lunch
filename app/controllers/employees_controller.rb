@@ -18,7 +18,7 @@ class EmployeesController < ApplicationController
 
   def create
     @employee = Employee.new(emp_params)
-    @employee.save
+    @employee.save!
 
     join_mystery_lunch
     redirect_to employees_path
@@ -52,13 +52,12 @@ class EmployeesController < ApplicationController
       @employee.update_attribute(:to_delete, true)
       dt = Date.today
       current_partners = Employee.fetch_partners(@employee.id)
-      LunchPartner.where("created_at > ?", dt.beginning_of_month).where(employee_id: @employee.id).first&.destroy
-      pp current_partners.size
+      LunchPartner.where("created_at >= ?", dt.beginning_of_month).where(employee_id: @employee.id).first&.destroy
       if current_partners.size < 2 && current_partners.size > 0
         partner = Employee.find(current_partners.pop)
-        LunchPartner.where("created_at > ?", dt.beginning_of_month).where(employee_id: partner.id).first.destroy
+        LunchPartner.where("created_at >= ?", dt.beginning_of_month).where(employee_id: partner.id).first.destroy
 
-        emp_departments_in_groups = LunchPartner.where("created_at > ? AND created_at < ?", dt.beginning_of_month, dt.end_of_month).pluck(:lunch_group_id, :department_id).group_by(&:shift).transform_values(&:flatten)
+        emp_departments_in_groups = LunchPartner.where("created_at >= ? AND created_at <= ?", dt.beginning_of_month, dt.end_of_month).pluck(:lunch_group_id, :department_id).group_by(&:shift).transform_values(&:flatten)
         group = LunchGroup.find(Employee.find_lunch_group(emp_departments_in_groups, partner.department.id))
         LunchPartner.create(lunch_group: group, employee: partner, department_id: partner.department.id, month: dt.strftime('%B'), created_at: dt)
       end
@@ -70,7 +69,7 @@ class EmployeesController < ApplicationController
 
   def join_mystery_lunch
     dt = Date.today
-    emp_departments_in_groups = LunchPartner.where("created_at > ? AND created_at < ?", dt.beginning_of_month, dt.end_of_month).pluck(:lunch_group_id, :department_id).group_by(&:shift).transform_values(&:flatten)
+    emp_departments_in_groups = LunchPartner.where("created_at >= ? AND created_at <= ?", dt.beginning_of_month, dt.end_of_month).pluck(:lunch_group_id, :department_id).group_by(&:shift).transform_values(&:flatten)
     group = LunchGroup.find(Employee.find_lunch_group(emp_departments_in_groups, @employee.department.id))
     LunchPartner.create(lunch_group: group, employee: @employee, department_id: @employee.department.id, month: dt.strftime('%B'), created_at: dt)
   end

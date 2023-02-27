@@ -37,6 +37,7 @@ class Employee < ApplicationRecord
     # Jag: Find a group, so that depts of every employee is different
     def find_lunch_group(emp_departments_in_groups, dept_of_emp_to_pair)
       emp_departments_in_groups.each do |k,v|
+        return k if LunchGroup.created_this_month.count == 1
         next if LunchPartner.created_this_month.where(lunch_group_id: k).count > 2
         return k unless v.include? dept_of_emp_to_pair
       end
