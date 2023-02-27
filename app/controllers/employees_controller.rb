@@ -5,7 +5,7 @@ class EmployeesController < ApplicationController
   def index
     if session[:valid]
       @msg = "logged in"
-      @employees = Employee.unscoped.all
+      @employees = Employee.unscoped.order(updated_at: :desc).all
     end
   end
 
@@ -20,11 +20,7 @@ class EmployeesController < ApplicationController
     @employee = Employee.new(emp_params)
     @employee.save
 
-    dt = Date.today
-    emp_departments_in_groups = LunchPartner.where("created_at > ? AND created_at < ?", dt.beginning_of_month, dt.end_of_month).pluck(:lunch_group_id, :department_id).group_by(&:shift).transform_values(&:flatten)
-    group = LunchGroup.find(Employee.find_lunch_group(emp_departments_in_groups, @employee.department.id))
-    LunchPartner.create(lunch_group: group, employee: @employee, department_id: @employee.department.id, month: dt.strftime('%B'), created_at: dt)
-
+    join_mystery_lunch
     redirect_to employees_path
   end
 
@@ -51,6 +47,7 @@ class EmployeesController < ApplicationController
     end
     if params[:restore]
       @employee.update_attribute(:to_delete, false)
+      join_mystery_lunch
     else
       @employee.update_attribute(:to_delete, true)
       dt = Date.today
@@ -70,6 +67,13 @@ class EmployeesController < ApplicationController
   end
 
   private
+
+  def join_mystery_lunch
+    dt = Date.today
+    emp_departments_in_groups = LunchPartner.where("created_at > ? AND created_at < ?", dt.beginning_of_month, dt.end_of_month).pluck(:lunch_group_id, :department_id).group_by(&:shift).transform_values(&:flatten)
+    group = LunchGroup.find(Employee.find_lunch_group(emp_departments_in_groups, @employee.department.id))
+    LunchPartner.create(lunch_group: group, employee: @employee, department_id: @employee.department.id, month: dt.strftime('%B'), created_at: dt)
+  end
 
   def set_employee
     @employee = Employee.unscoped.find(params[:id])
