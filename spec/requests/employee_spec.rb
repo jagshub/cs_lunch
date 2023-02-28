@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe "Employee", type: :request do
-  describe "request list of all employees" do
+  describe " verify CRUD for employees" do
     before(:each) do
       session = { valid: true }
       allow_any_instance_of(EmployeesController).to receive(:session).and_return(session)
