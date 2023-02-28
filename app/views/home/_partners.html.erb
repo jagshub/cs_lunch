@@ -2,10 +2,21 @@
 <table class="table">
   <thead>
   <tr>
+    <th>No.</th>
     <th>Lunch partners </th>
     <th></th>
-    <th colspan="3">
+    <th colspan="1">
       Filter by dept
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <%= @dept_name%>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="/home">All</a></li>
+        <% Department.all.each do |dept| %>
+          <li><a class="dropdown-item" href="/home?dept=<%= dept.id%>"><%= dept.name %></a></li>
+        <% end %>
+      </ul>
+      </div>
     </th>
   </tr>
   </thead>
@@ -15,23 +26,12 @@
     <td></td>
     <td></td>
     <td>
-      <div class="dropdown">
-        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <%= @dept_name%>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="/home">All</a></li>
-          <% Department.all.each do |dept| %>
-          <li><a class="dropdown-item" href="/home?dept=<%= dept.id%>"><%= dept.name %></a></li>
-          <% end %>
-        </ul>
-      </div>
     </td>
   </tr>
   <%  if LunchGroup.count >1 && LunchGroup.last.lunch_date > Date.today.beginning_of_month  %>
   <% @employees.each do |emp| %>
     <% next if @partners.include? emp.id  %>
-    <tr>
+    <tr><td># </td>
     <td>
       <div class="card" style="width:250px">
         <% if emp.image.attached? %>
