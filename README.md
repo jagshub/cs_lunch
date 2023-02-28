@@ -24,7 +24,18 @@ Please check schedule.rb comments to run every month.
 
 **Run this command to create the cronjob.**  
 Mystery lunch for current month should be created in 1 minute.  
-`whenever --update-crontab --set environment=development`
+`whenever --update-crontab --set environment=development` 
+
+`$ crontab -l`
+```
+
+
+# Begin Whenever generated tasks for: /Users/jag/workspace/cs_lunch/config/schedule.rb at: 2023-02-27 18:34:52 +0530
+* * * * * /bin/bash -l -c 'cd /Users/jag/workspace/cs_lunch && bundle exec bin/rails runner -e development '\''LunchPartner.create_mystery_lunch_for_current_month'\'' >> log/cron_log.log 2>&1'
+
+# End Whenever generated tasks for: /Users/jag/workspace/cs_lunch/config/schedule.rb at: 2023-02-27 18:34:52 +0
+```
+
 
 **Start the app**  
 rails s
