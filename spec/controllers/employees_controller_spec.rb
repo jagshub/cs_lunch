@@ -2,18 +2,6 @@ require 'rails_helper'
 
 RSpec.describe EmployeesController, type: :controller do
 
-  describe "GET index" do
-    it "returns a successful response" do
-      get :index
-      expect(response).to be_successful
-    end
-
-    it "renders the index template" do
-      get :index
-      expect(response).to render_template("index")
-    end
-  end
-
   describe 'Manage requires login' do
     it 'redirects to login page' do
       get :new

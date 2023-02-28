@@ -2,12 +2,11 @@
   <thead>
   <tr>
     <th colspan="5"> Previous Lunch partners </th>
-    <a href="/" class="btn btn-primary"> Home </a>
   </tr>
   </thead>
   <tbody>
   <tr>
-<% Employee.fetch_previous_partners(@employee).each do |id| %>
+<% @all_previous_partners.each do |id| %>
   <% emp = Employee.find(id) %>
   <td>
 

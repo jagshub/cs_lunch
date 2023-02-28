@@ -3,10 +3,10 @@ class EmployeesController < ApplicationController
   before_action :set_employee, only: %i[ show edit update destroy ]
 
   def index
-    if session[:valid]
-      @msg = "logged in"
-      @employees = Employee.unscoped.order(updated_at: :desc).all
+    unless session[:valid]
+      redirect_to(login_path)
     end
+    @employees = Employee.unscoped.order(updated_at: :desc).all
   end
 
   def new

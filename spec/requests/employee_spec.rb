@@ -3,6 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe "Employee", type: :request do
+  describe " verify manage employees needs login" do
+    it 'shows login page when accessing manage link' do
+      get employees_url
+
+      expect(response).to redirect_to(login_url)
+    end
+  end
+
   describe " verify CRUD for employees" do
     before(:each) do
       session = { valid: true }

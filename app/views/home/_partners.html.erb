@@ -28,7 +28,7 @@
       </div>
     </td>
   </tr>
-  <%  if LunchGroup.last.lunch_date > Date.today.beginning_of_month  %>
+  <%  if LunchGroup.count >1 && LunchGroup.last.lunch_date > Date.today.beginning_of_month  %>
   <% @employees.each do |emp| %>
     <% next if @partners.include? emp.id  %>
     <tr>
