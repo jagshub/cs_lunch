@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+</head>
+<body>
+<p>Your lunch partners for this month!</p>
+<p>
+</p>
+
+</p>
+Partner details<br>
+--------------------------
+<p><%= @partners.each do |partner| %></p>
+<p>Name: <%= Employee.find(partner).name %></p>
+<p>Dept: <%= Employee.find(partner).department.name %></p>
+    <%end %>
+<p>
+</body>
+</html>
