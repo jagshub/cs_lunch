@@ -1,6 +1,7 @@
 <hr>
 <table class="table">
   <thead>
+  <%  if LunchGroup.count >1 && LunchGroup.last.lunch_date > Date.today.beginning_of_month  %>
   <tr>
     <th>No.</th>
     <th>Lunch partners </th>
@@ -28,7 +29,7 @@
     <td>
     </td>
   </tr>
-  <%  if LunchGroup.count >1 && LunchGroup.last.lunch_date > Date.today.beginning_of_month  %>
+  <%#  if LunchGroup.count >1 && LunchGroup.last.lunch_date > Date.today.beginning_of_month  %>
   <% @employees.each do |emp| %>
     <% next if @partners.include? emp.id  %>
     <tr><td># </td>
@@ -67,7 +68,7 @@
     </tr>
   <% end %>
   <%else %>
-  Mystery lunch to be generated for month
+  Mystery lunch to be generated for month in a minute by cron.
   <% end %>
   </tbody>
 </table>
