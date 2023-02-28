@@ -21,10 +21,12 @@ class Employee < ApplicationRecord
   include Rails.application.routes.url_helpers
 
   belongs_to :department
-  has_many :lunch_groups
-  has_many :lunch_partners, :through => :lunch_groups
+  has_many :lunch_partners
+  has_many :lunch_groups, :through => :lunch_partners
 
   has_one_attached :image
+
+  validates_presence_of :name, :department_id
 
   default_scope { where(to_delete: false).order(updated_at: :desc)}
 
@@ -46,16 +48,14 @@ class Employee < ApplicationRecord
     def fetch_previous_partners(emp_id, all = false)
       groups =  all ? LunchPartner.where(employee_id: emp_id).pluck(:lunch_group_id) :
                   LunchPartner.created_in_last_3_months.where(employee_id: emp_id).pluck(:lunch_group_id)
-      partners = []
-      partners << LunchPartner.where(lunch_group_id: groups).where.not(employee_id: emp_id).pluck(:employee_id)
-      partners.flatten.uniq
+      partners = all ? LunchPartner.created_in_last_3_months.where(lunch_group_id: groups).where.not(employee_id: emp_id).pluck(:employee_id) : LunchPartner.where(lunch_group_id: groups).where.not(employee_id: emp_id).pluck(:employee_id)
+      partners
     end
 
     def fetch_partners(emp_id)
       lunch_groups = LunchPartner.created_this_month.where(employee_id: emp_id).pluck(:lunch_group_id)
-      partners = []
-      partners << LunchPartner.where(lunch_group_id: lunch_groups).where.not(employee_id: emp_id).pluck(:employee_id)
-      partners.flatten.uniq
+      partners =  LunchPartner.where(lunch_group_id: lunch_groups).where.not(employee_id: emp_id).pluck(:employee_id)
+      partners
     end
   end
 end
