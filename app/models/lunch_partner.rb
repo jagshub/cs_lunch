@@ -42,6 +42,7 @@ class LunchPartner < ApplicationRecord
         grp = LunchGroup.create!(lunch_date: Utils::first_friday(dt), created_at: dt)
 
         emp = Employee.find(emp_id)
+        mail_emp = emp
         LunchPartner.create(lunch_group: grp, employee: emp, department_id: emp.department.id, month: dt.strftime('%B'), created_at: dt)
         partnered_ids << emp_id
 
@@ -55,6 +56,8 @@ class LunchPartner < ApplicationRecord
         partnered_ids << pair
 
         emp_arr = emp_arr - partnered_ids
+
+        LunchPartnerrMailer.with(emp: mail_emp.id).notify_partners_email.deliver_later
       end
 
       # When employees count is odd, add the emp as 3rd member to a existing lunch group.

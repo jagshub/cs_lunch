@@ -73,7 +73,7 @@ Employee.unscoped.destroy_all
   f_name = Faker::Name.first_name
   s_name = Faker::Name.last_name
   sex = ['Male', 'Female']
-  Employee.create!(name: "#{f_name} #{s_name}", sex: sex[rand(0..1)], image_url: Faker::Avatar.image, department: Department.all.sample)
+  Employee.create!(name: "#{f_name} #{s_name}", email: Faker::Internet.email, sex: sex[rand(0..1)], image_url: Faker::Avatar.image, department: Department.all.sample)
 end
 
 # Jag: Create a few mystery lunches in the past
